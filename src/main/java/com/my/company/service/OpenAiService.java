@@ -34,22 +34,23 @@ public class OpenAiService {
      );
 
     try {
-         Map<String, Object> response = webClient.post()
-                .uri(apiUrl)
-                .header(HttpHeaders.AUTHORIZATION, "Bearer " + apiKey)
-                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .bodyValue(requestBody)
-                .retrieve()
-                .bodyToMono(Map.class)
-                .block();
-
-         List<Map<String, Object>> choices = (List<Map<String, Object>>) response.get("choices");
-         Map<String, Object> message = (Map<String, Object>) choices.get(0).get("message");
-
-         return message.get("content").toString().trim();
-
-      } catch (Exception e) {
-          return "Couldn't get the meaning from OpenAI.";
-      }
-  }
+        Map<String, Object> response =
++          webClient
++              .post()
++              .uri(apiUrl)
++              .header(HttpHeaders.AUTHORIZATION, "Bearer " + apiKey)
++              .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
++              .bodyValue(requestBody)
++              .retrieve()
++              .bodyToMono(Map.class)
++              .block();
++
++      List<Map<String, Object>> choices = (List<Map<String, Object>>) response.get("choices");
++      Map<String, Object> message = (Map<String, Object>) choices.get(0).get("message");
++
++      return message.get("content").toString().trim();
++
++    } catch (Exception e) {
++      return "Couldn't get the meaning from OpenAI.";
++    }
 }
