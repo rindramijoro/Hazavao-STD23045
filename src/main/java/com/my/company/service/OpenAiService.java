@@ -1,28 +1,26 @@
 package com.my.company.service;
 
+import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.util.List;
-import java.util.Map;
-
 @Service
 public class OpenAiService {
-    private final WebClient webClient;
+ private final WebClient webClient;
+ @Value("${openai.api.key}")
+ private String apiKey;
 
-    @Value("${openai.api.key}")
-    private String apiKey;
+ @Value("${openai.api.url}")
+ private String apiUrl;
 
-    @Value("${openai.api.url}")
-    private String apiUrl;
+ public OpenAiService(WebClient.Builder webClientBuilder) {
+   this.webClient = webClientBuilder.build();
+ }
 
-    public OpenAiService(WebClient.Builder webClientBuilder) {
-        this.webClient = webClientBuilder.build();
-    }
-
-    public String getDefinitionInMalagasy(String teny) {
+ public String getDefinitionInMalagasy(String teny) {
         Map<String, Object> requestBody = Map.of(
                 "model", "gpt-3.5-turbo",
                 "messages", List.of(
